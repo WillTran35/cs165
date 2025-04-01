@@ -1,12 +1,15 @@
-def insertion_sort():
+def insertion_sort(arr):
+    for i in range(len(arr)):
+        temp = arr[i]
+        j = i
+        while j > 0 and arr[j-1] > temp:
+            arr[j] = arr[j -1]
+            j -= 1
+        arr[j] = temp
 
-    x = [1, 6, 7, 8, 9, 10, 2]
-    for i in x:
-        print(i)
+    return arr
 
-    for i in range(len(x)):
-        print(i)
 
 if __name__ == '__main__':
-    insertion_sort()
-
+    x = [1, 4, 0, -1, -5, 6, 3]
+    print(insertion_sort(x))
