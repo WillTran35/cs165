@@ -1,47 +1,67 @@
 def make_runs(arr):
     result = []
     temp = []
+    index = 0
     for i in arr:
         if len(temp) == 0:
-            temp.append(i)
-        elif i >= temp[-1]:
-            temp.append(i)
+            temp.append(index)
+        elif i >= arr[temp[-1]]:
+            temp.append(index)
         else:
             result.append(temp)
-            temp = [i]
+            temp = [index]
+        index += 1
 
     if len(temp) != 0:
         result.append(temp)
 
     return result
 
-def merge(first, second):
+
+def merge(first, second, result):
     first_len = len(first)
     second_len = len(second)
     pos1 = 0
     pos2 = 0
-    result = []
+    start = first[0]
+    sub_arr = []
     while not pos1 >= first_len and not pos2 >= second_len:
         # print(pos1, pos2)
-        if first[pos1] < second[pos2]:
-            result.append(first[pos1])
+        if result[first[pos1]] < result[second[pos2]]:
+            sub_arr.append(result[first[pos1]])
             pos1 += 1
-        elif first[pos1] > second[pos2]:
-            result.append(second[pos2])
+            start += 1
+        elif result[first[pos1]] > result[second[pos2]]:
+            sub_arr.append(result[second[pos2]])
             pos2 += 1
+            start += 1
         else:
-            result.append(first[pos1])
-            result.append(second[pos2])
+            sub_arr.append(result[first[pos1]])
+            start += 1
+            sub_arr.append(result[second[pos2]])
+            start += 1
             pos1 += 1
             pos2 += 1
 
     if pos1 < first_len:
-        result += first[pos1:]
+        # print(first[pos1:])
+        for i in first[pos1:]:
+            # print(i)
+            sub_arr += [result[i]]
+        # sub_arr += result[first[pos1:]]
 
     elif pos2 < second_len:
-        result += second[pos2:]
-
-    return result
+        for i in second[pos2:]:
+            # print(i)
+            sub_arr += [result[i]]
+        # sub_arr += result[second[pos2:]]
+    merged_indexes = first + second
+    # print(sub_arr)
+    count = 0
+    for i in range(first[0], second[-1] + 1):
+        result[i] = sub_arr[count]
+        count += 1
+    return merged_indexes
 
 
 def tim_sort(arr):
@@ -51,34 +71,30 @@ def tim_sort(arr):
         run = runs.pop(0)
         stack.append(run)
         height = len(stack)
-        # print(f"this is : {len(runs)}")
         while True:
             if height >= 3 and len(stack[0]) > len(stack[2]):
-                stack[1] = merge(stack[1], stack[2])
+                stack[1] = merge(stack[1], stack[2], arr)
                 stack.pop(2)
             elif height >= 2 and len(stack[0]) >= len(stack[1]):
-                stack[0] = merge(stack[0], stack[1])
+                stack[0] = merge(stack[0], stack[1], arr)
                 stack.pop(1)
             elif height >= 3 and len(stack[0]) + len(stack[1]) >= len(stack[2]):
-                stack[0] = merge(stack[0], stack[1])
+                stack[0] = merge(stack[0], stack[1], arr)
                 stack.pop(1)
             elif height >= 4 and len(stack[1]) + len(stack[2]) >= len(stack[3]):
-                stack[0] = merge(stack[0], stack[1])
+                stack[0] = merge(stack[0], stack[1], arr)
                 stack.pop(1)
-
-            # print(f"stack: {stack}")
+            # print(f"Stack: {stack}")
             break
     while len(stack) != 1:
-        stack[0] = merge(stack[0], stack[1])
+        stack[0] = merge(stack[0], stack[1], arr)
         stack.pop(1)
-    return stack[0]
+    return arr
 
 
 if __name__ == '__main__':
     x = [96, 38, 81, 57, 63, 21, 14, 13, 50, 74]
-    # print(make_runs(x))
-    # x = [4,5,9]
-    # y = [1,10]
-    # print(merge(x,y))
+    print(x)
+    print(make_runs(x))
     print(tim_sort(x))
 
