@@ -51,7 +51,7 @@ def tim_sort(arr):
         run = runs.pop(0)
         stack.append(run)
         height = len(stack)
-        print(f"this is : {len(runs)}" )
+        # print(f"this is : {len(runs)}")
         while True:
             if height >= 3 and len(stack[0]) > len(stack[2]):
                 stack[1] = merge(stack[1], stack[2])
@@ -66,20 +66,19 @@ def tim_sort(arr):
                 stack[0] = merge(stack[0], stack[1])
                 stack.pop(1)
 
-            print(f"stack: {stack}")
+            # print(f"stack: {stack}")
             break
     while len(stack) != 1:
-        stack[1] = merge(stack[1], stack[2])
-        stack.pop(2)
+        stack[0] = merge(stack[0], stack[1])
+        stack.pop(1)
     return stack[0]
 
 
 if __name__ == '__main__':
-    x = [4,5,9,3,1,10]
+    x = [96, 38, 81, 57, 63, 21, 14, 13, 50, 74]
     # print(make_runs(x))
     # x = [4,5,9]
     # y = [1,10]
     # print(merge(x,y))
-
     print(tim_sort(x))
 
