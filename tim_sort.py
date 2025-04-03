@@ -1,5 +1,3 @@
-from collections import deque
-
 def make_runs(arr):
     result = []
     temp = []
