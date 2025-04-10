@@ -18,8 +18,7 @@ def compute_runs(arr):
     return runs
 
 
-def shell_sort2(arr):
-    gap = compute_runs(arr)
+def shell_sort_main(arr, gap):
     index = 0
     start = gap[index]
 
@@ -38,6 +37,10 @@ def shell_sort2(arr):
             break
         start = gap[index]
     return arr
+
+def shell_sort2(arr):
+    runs = compute_runs(arr)
+    return shell_sort_main(arr, runs)
 
 if __name__ == '__main__':
     arr = [random.randint(1, 4000) for _ in range(11)]

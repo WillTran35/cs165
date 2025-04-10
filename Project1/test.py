@@ -13,7 +13,8 @@ class MyTestCase(unittest.TestCase):
             self.assertEqual(tim_sort(arr), all_sorted)
             self.assertEqual(insertion_sort(arr), all_sorted)
             self.assertEqual(shell_sort1(arr), all_sorted)
-            self.assertEqual(shell_sort2(arr),all_sorted)
+            self.assertEqual(shell_sort2(arr), all_sorted)
+            self.assertEqual(shell_sort3(arr), all_sorted)
 
     def test_equals(self):
         x = [9 for i in range(1000)]
