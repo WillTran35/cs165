@@ -18,5 +18,5 @@ def shell_sort3(arr):
 
 if __name__ == '__main__':
     arr = [random.randint(1, 4000) for _ in range(100)]
-    # print(compute_gaps(arr))
+    print(compute_gaps(arr))
     print(shell_sort3(arr))

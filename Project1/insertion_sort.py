@@ -9,7 +9,6 @@ def insertion_sort(arr):
 
     return arr
 
-
 if __name__ == '__main__':
     x = [1, 4, 0, -1, -5, 6, 3]
     print(insertion_sort(x))
