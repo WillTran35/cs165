@@ -17,7 +17,7 @@ def compute_runs(arr):
             q += 1
 
         p += 1
-    return list(gap)
+    return list(gap).reverse()
 
 
 def shell_sort4(arr):
