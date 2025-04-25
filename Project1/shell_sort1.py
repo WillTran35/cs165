@@ -1,4 +1,5 @@
 import random
+import time
 from shell_sort2 import shell_sort_main
 def compute_runs(arr):
     length = len(arr)

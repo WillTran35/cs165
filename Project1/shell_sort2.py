@@ -1,6 +1,7 @@
 # The sequence, 2[n/2^(k+1)]+1, for k=1,2,...,log n,
 # where [*] denotes the floor function.
 import random
+import time
 def compute_runs(arr):
     # ex: length 6
     length = len(arr)
@@ -20,22 +21,26 @@ def compute_runs(arr):
 
 def shell_sort_main(arr, gap):
     index = 0
-    start = gap[index]
-
-    while start > 0 and index < len(gap):
-        i = start
-        while i < len(arr):
-            temp = arr[i]
-            j = i
-            while j >= start and temp < arr[j - start]:
-                arr[j] = arr[j - start]
-                j -= start
-            arr[j] = temp
-            i += 1
-        index += 1
-        if index >= len(gap):
-            break
+    try:
         start = gap[index]
+
+        while start > 0 and index < len(gap):
+            i = start
+            while i < len(arr):
+                temp = arr[i]
+                j = i
+                while j >= start and temp < arr[j - start]:
+                    arr[j] = arr[j - start]
+                    j -= start
+                arr[j] = temp
+                i += 1
+            index += 1
+            if index >= len(gap):
+                break
+            start = gap[index]
+    except Exception as e:
+        print(f"EXCEPTION: {e} at arr: {arr}, gap: {gap} ")
+    # end = time.perf_counter_ns()
     return arr
 
 def shell_sort2(arr):

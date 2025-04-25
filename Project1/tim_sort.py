@@ -1,3 +1,4 @@
+import time
 def make_runs(arr):
     result = []
     temp = []
@@ -65,6 +66,7 @@ def merge(first, second, result):
 
 
 def tim_sort(arr):
+    start = time.perf_counter_ns()
     runs = make_runs(arr)
     stack = []
     while len(runs) != 0:
@@ -89,7 +91,8 @@ def tim_sort(arr):
     while len(stack) != 1:
         stack[0] = merge(stack[0], stack[1], arr)
         stack.pop(1)
-    return arr
+    end = time.perf_counter_ns()
+    return end-start
 
 
 if __name__ == '__main__':
