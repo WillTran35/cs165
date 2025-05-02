@@ -3,9 +3,9 @@ import time
 import random
 from requirements import *
 import math
-# name of csv
-# function array
-
+from pathlib import Path
+from Project1.csv import make_averages
+path_to_csv = "/Users/willtran/PycharmProjects/cs165/Project1/csv"
 def uniform_perm(n):
     arr = list(range(1, n + 1))
     random.shuffle(arr)
@@ -30,6 +30,7 @@ def run_test(func):
     test_num = [i for i in range(0, 17)]
     res = []
     for i in test_num:
+        _ = func(uniform_perm(2 ** i))
         for j in range(10):
             arr = uniform_perm(2 ** i)
             start = time.perf_counter_ns()
@@ -37,14 +38,16 @@ def run_test(func):
             end = time.perf_counter_ns()
             elapsed = end - start
             res.append([f'{i}', elapsed])
-            print(f"[{i}, {elapsed}]")
-    with open(f"{func.__name__}_uniform.csv", "w", newline='') as file:
+            print(f"{func.__name__}_uniform - [{i}, {elapsed}]")
+    with open(f"{path_to_csv}/{func.__name__}_uniform.csv", "w", newline='') as file:
         writer = csv.writer(file)
         for i in res:
             writer.writerow(i)
+            print(f"wrote {i} to {func.__name__}_uniform.csv")
 
     res2 = []
     for i in test_num:
+        _ = func(uniform_perm(2 ** i))
         for j in range(10):
             arr = almost_sorted_perm(2 ** i)
             start = time.perf_counter_ns()
@@ -52,28 +55,29 @@ def run_test(func):
             end = time.perf_counter_ns()
             elapsed = end - start
             res2.append([f'{i}', elapsed])
-            print(f"[{i}, {elapsed}]")
-    with open(f"{func.__name__}_almost_sorted.csv", "w", newline='') as file:
+            print(f"{func.__name__}_almost_sorted - [{i}, {elapsed}]")
+    with open(f"{path_to_csv}/{func.__name__}_almost_sorted.csv", "w", newline='') as file:
         writer = csv.writer(file)
         for i in res2:
             writer.writerow(i)
-            # print(f"wrote {i}")
+            print(f"wrote {i} to {func.__name__}_uniform.csv")
 
     res3 = []
     for i in test_num:
+        _ = func(uniform_perm(2 ** i))
         for j in range(10):
             arr = two_alternating_runs_perm(2 ** i)
             start = time.perf_counter_ns()
-            insertion_sort(arr)
+            func(arr)
             end = time.perf_counter_ns()
             elapsed = end - start
             res3.append([f'{i}', elapsed])
-            print(f"[{i}, {elapsed}]")
-    with open(f"{func.__name__}_alt_runs.csv", "w", newline='') as file:
+            print(f"{func.__name__}_alt_runs - [{i}, {elapsed}]")
+    with open(f"{path_to_csv}/{func.__name__}_alt_runs.csv", "w", newline='') as file:
         writer = csv.writer(file)
         for i in res3:
             writer.writerow(i)
-            # print(f"wrote {i}")
+            print(f"wrote {i} to {func.__name__}_uniform.csv")
 
 
 def test_insertion_sort():
@@ -104,9 +108,12 @@ def test_shell_sort5():
     run_test(shell_sort5)
 
 if __name__ == "__main__":
-    test_insertion_sort()
-    test_tim_sort()
-    test_shell_sort2()
-    test_shell_sort3()
-    test_shell_sort4()
-    test_shell_sort5()
+    # test_insertion_sort()
+    # test_tim_sort()
+    test_shell_sort1()
+    # test_shell_sort2()
+    # test_shell_sort3()
+    # test_shell_sort4()
+    # test_shell_sort5()
+    make_averages.gather_averages()
+    # make_averages.graph_averages()
