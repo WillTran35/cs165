@@ -1,6 +1,8 @@
 # explanations for member functions are provided in requirements.py
 # each file that uses a Zip Tree should import it from this file
 from __future__ import annotations
+
+from collections import deque
 from typing import TypeVar
 from dataclasses import dataclass
 import math
@@ -27,9 +29,21 @@ class ZipZipTree:
         self.capacity = capacity
         self.size = 0
         self.root = None  # should be a node
-        print(f"made zipzip cap - {self.capacity} size - {self.size} root = {self.root}" )
+        # print(f"made zipzip cap - {self.capacity} size - {self.size} root = {self.root.key if self.root else None}" )
 
+    def print_tree(self):
+        if not self.root:
+            return
+        queue = deque()
+        queue.append(self.root)
 
+        while queue:
+            node = queue.popleft()
+            print(f"Printing Key: {node.key}, Value: {node.value}, Rank: ({node.rank.geometric_rank}, {node.rank.uniform_rank})")
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
     def get_random_rank(self) -> Rank:
         """# get_random_rank(): returns a random node rank, chosen independently from:
         # a geometric distribution of mean 1 and,
@@ -43,13 +57,17 @@ class ZipZipTree:
         return Rank(geometric, uniform)
 
     def compare_ranks (self, node1, node2):
-        return (node2.rank.geometric_rank > node1.rank.geometric_rank) or \
-        (node2.rank.geometric_rank == node1.rank.geometric_rank and node2.rank.uniform_rank > node1.rank.uniform_rank)
-
+        # return (node2.rank.geometric_rank > node1.rank.geometric_rank) or \
+        # (node2.rank.geometric_rank == node1.rank.geometric_rank and node2.rank.uniform_rank > node1.rank.uniform_rank)
+        if node2.rank.geometric_rank != node1.rank.geometric_rank:
+            return node2.rank.geometric_rank > node1.rank.geometric_rank
+        if node2.rank.uniform_rank != node1.rank.uniform_rank:
+            return node2.rank.uniform_rank > node1.rank.uniform_rank
+        return node2.key < node1.key  # Prefer smaller keys on tie
 
     def insert_recur(self, root, node):
         if not root:
-            print("returning node")
+            # print("returning node")
             return node
 
         # if equal:
@@ -71,16 +89,17 @@ class ZipZipTree:
         return root
 
     def insert(self, key: KeyType, val: ValType, rank: Rank = None):
-        print(key, val, rank)
+        # print(key, val, rank)
         if rank is None:
             rank = self.get_random_rank()
         node = Node(key, val, rank)
         if self.root is None:
             self.root = node
+            self.size += 1
             return self.root
         self.root = self.insert_recur(self.root, node)
         self.size += 1
-        print(f"!!made zipzip cap - {self.capacity} size - {self.size} root = {self.root}")
+        # print(f"!!made zipzip cap - {self.capacity} size - {self.size} root = {self.root}")
 
 
     def remove(self, key: KeyType):
@@ -118,16 +137,16 @@ class ZipZipTree:
 
     def find(self, key: KeyType) -> ValType:
         curr = self.root
-        print(f"THIS IS CURR {curr.key}" )
+        # print(f"THIS IS CURR {curr.key}" )
         while curr:
-            print("in while loop")
+            # print("in while loop")
             if curr.key == key:
                 return curr.value
             if curr.key > key:
                 curr = curr.left
             else:
                 curr = curr.right
-        return curr.value
+        return curr.value if curr else None
 
     def get_size(self) -> int:
         return self.root.size

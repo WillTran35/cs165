@@ -23,6 +23,8 @@ def create_tree_with_data(data: list[InsertType]) -> requirements.ZipZipTree:
 	for item in data:
 		tree.insert(item.key, item.val, item.rank)
 
+	tree.print_tree()
+
 	return tree
 
 class ProblemInstance(NamedTuple):
@@ -58,6 +60,7 @@ def zip_tree_tests():
 	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
 	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 1')
 	tree.insert(0, 'e', requirements.Rank(1, 5))
+	tree.print_tree()
 	print(f'get_size(): {tree.get_size()}, Expected: 5')
 	print(f'get_height(): {tree.get_height()}, Expected: 2')
 	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
