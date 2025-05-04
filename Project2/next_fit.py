@@ -10,28 +10,15 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
     # creates.
 
     # items - [.5, .7, .5 , .2, .4, .2, .5, .1, .6]
-    index = 0
+    EPSILON = 1e-10
     for i in items:
-        if len(free_space) == 0:
-            # print(free_space)
-            # print(assignment)
-            assignment[index] = index
-            # buckets.append([i])
-            free_space.append(1-i)
-
-        elif free_space[-1] >= i:
-            free_space[-1] -= i
-            assignment.append(len(free_space) - 1)
-            # assignment[index] =
-        else:
+        if len(free_space) == 0 or free_space[-1] + EPSILON < i :
             free_space.append(1 - i)
             assignment.append(len(free_space) - 1)
-            # assignment[index] = len(free_space) - 1
 
-        index += 1
-        # print(f"added {i}")
-        # print(f" Assignment: {assignment}")
-        # print(f" Free Space: {free_space}")
+        else :
+            free_space[-1] -= i
+            assignment.append(len(free_space) - 1)
 
 
 
