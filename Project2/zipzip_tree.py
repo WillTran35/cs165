@@ -59,11 +59,20 @@ class ZipZipTree:
     def compare_ranks (self, node1, node2):
         # return (node2.rank.geometric_rank > node1.rank.geometric_rank) or \
         # (node2.rank.geometric_rank == node1.rank.geometric_rank and node2.rank.uniform_rank > node1.rank.uniform_rank)
+        """used for unzip funtion. returns true if node2 is greater than node1"""
         if node2.rank.geometric_rank != node1.rank.geometric_rank:
             return node2.rank.geometric_rank > node1.rank.geometric_rank
         if node2.rank.uniform_rank != node1.rank.uniform_rank:
             return node2.rank.uniform_rank > node1.rank.uniform_rank
         return node2.key < node1.key  # Prefer smaller keys on tie
+
+    def compare_ranksZip(self, node1, node2) -> bool:
+
+        if node1.rank.geometric_rank != node2.rank.geometric_rank:
+            return node1.rank.geometric_rank > node2.rank.geometric_rank
+        if node1.rank.uniform_rank != node2.rank.uniform_rank:
+            return node1.rank.uniform_rank > node2.rank.uniform_rank
+        return node1.key < node2.key  # Prefer smaller keys on tie
 
     def insert_recur(self, root, node):
         if not root:
@@ -112,7 +121,7 @@ class ZipZipTree:
         if not right:
             return left
 
-        if self.compare_ranks(left, right):
+        if self.compare_ranksZip(left, right):
             left.right = self.zip(left.right, right)
             left.size = (left.left.size if left.left else 0) + (left.right.size if left.right else 0) + 1
             return left
@@ -124,6 +133,8 @@ class ZipZipTree:
 
 
     def remove_recur(self, root, key):
+        if not root:
+            return None
         if key < root.key:
             root.left = self.remove_recur(root.left, key)
         elif key > root.key:

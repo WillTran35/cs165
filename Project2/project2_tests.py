@@ -59,8 +59,11 @@ def zip_tree_tests():
 	print(f'get_height(): {tree.get_height()}, Expected: 2')
 	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
 	print(f'get_depth(1): {tree.get_depth(1)}, Expected: 1')
-	tree.insert(0, 'e', requirements.Rank(1, 5))
 	tree.print_tree()
+	tree.remove(4)
+	print("REMOVED")
+	tree.print_tree()
+	tree.insert(0, 'e', requirements.Rank(1, 5))
 	print(f'get_size(): {tree.get_size()}, Expected: 5')
 	print(f'get_height(): {tree.get_height()}, Expected: 2')
 	print(f'get_depth(2): {tree.get_depth(2)}, Expected: 0')
@@ -74,7 +77,10 @@ def zip_tree_tests():
 	print(f'get_height(): {tree2.get_height()}, Expected: 4')
 	print(f'get_depth(2): {tree2.get_depth(2)}, Expected: 3')
 	print(f'get_depth(1): {tree2.get_depth(1)}, Expected: 4')
-
+	# tree2.print_tree()
+	# tree2.remove(2)
+	# print("removed")
+	# tree2.print_tree()
 	print('\ntesting random geometric rank generation')
 	geometric_rank_sum = 0
 	num_ranks = 10000

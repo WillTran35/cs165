@@ -1,6 +1,6 @@
 # Import each one of your sorting algorithms below as follows:
 # Feel free to comment out these lines before your algorithms are implemented.
-# from next_fit import next_fit
+from next_fit import next_fit
 # from first_fit import first_fit
 # from first_fit import first_fit_decreasing
 # from best_fit import best_fit
@@ -49,8 +49,7 @@ from zipzip_tree import ZipZipTree, Rank
 # assume len(assignment) == len(items).
 # you should not add any new elements to this list.
 # you must modify this list's elements to indicate the assignment.
-# see comment below for first-fit decreasing and for best-fit
-# decreasing.
+# see comment below for first-fit decreasing and for best-fit decreasing.
 #
 # free_space: the amount of space left in the jth bin for all j bins created by
 # the algorithm.
