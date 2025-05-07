@@ -10,10 +10,13 @@ import random
 
 KeyType = TypeVar('KeyType')
 ValType = TypeVar('ValType')
+
+
 @dataclass
 class Rank:
     geometric_rank: int
     uniform_rank: int
+
 
 class Node:
     def __init__(self, key, value, rank):
@@ -24,11 +27,15 @@ class Node:
         self.right = None
         self.size = 1
 
+
 class ZipZipTree:
+
+
     def __init__(self, capacity: int):
         self.capacity = capacity
         self.size = 0
         self.root = None  # should be a node
+        self.count = -1
         # print(f"made zipzip cap - {self.capacity} size - {self.size} root = {self.root.key if self.root else None}" )
 
     def print_tree(self):
@@ -39,11 +46,13 @@ class ZipZipTree:
 
         while queue:
             node = queue.popleft()
-            print(f"Printing Key: {node.key}, Value: {node.value}, Rank: ({node.rank.geometric_rank}, {node.rank.uniform_rank})")
+            print(
+                f"Printing Key: {node.key}, Value: {node.value}, Rank: ({node.rank.geometric_rank}, {node.rank.uniform_rank})")
             if node.left:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
+
     def get_random_rank(self) -> Rank:
         """# get_random_rank(): returns a random node rank, chosen independently from:
         # a geometric distribution of mean 1 and,
@@ -56,7 +65,7 @@ class ZipZipTree:
         uniform = random.randint(0, max(0, max_uni))
         return Rank(geometric, uniform)
 
-    def compare_ranks (self, node1, node2):
+    def compare_ranks(self, node1, node2):
         # return (node2.rank.geometric_rank > node1.rank.geometric_rank) or \
         # (node2.rank.geometric_rank == node1.rank.geometric_rank and node2.rank.uniform_rank > node1.rank.uniform_rank)
         """used for unzip funtion. returns true if node2 is greater than node1"""
@@ -110,6 +119,68 @@ class ZipZipTree:
         self.size += 1
         # print(f"!!made zipzip cap - {self.capacity} size - {self.size} root = {self.root}")
 
+    def in_order_traversal(self, node, val):
+        stack = []
+        EPSILON = 1e-10
+        # print(f"in order node: {node.value}")
+        while stack or node:
+            while node:
+                stack.append(node)
+                # print(f"outside33 {stack}")
+                node = node.left
+            # print(f"outside {node}")
+            node = stack.pop()
+            # print(f"outside3 {node}")
+            if node.value + EPSILON >= val:
+                # print("found a node")
+                return node
+            node = node.right
+        return None
+
+        #     node = node.left
+        #     if not node:
+        #         node = node.right
+        #
+        # left_result = self.in_order_traversal(node.left, val)
+        # if left_result:
+        #     return left_result
+        # if node.value >= val:
+        #     return node
+        # return self.in_order_traversal(node.right, val)
+
+    def insertForFirstFit(self, val):
+
+        #     search for position to insert by checking size
+        #     if it fits in a node, then we just subtract the size available,
+        #     if we need to make a new node, we will make new node with key as the bin number and log it
+        #       key is bin number, val is available capacity
+
+        if not self.root:
+            self.count += 1
+            value = math.isclose(1, val, )
+            node = Node(self.count, 1 - val, self.get_random_rank())
+            self.root = self.insert_recur(self.root, node)
+            self.size += 1
+            print("if not self.root")
+            return self.count, node.value
+        else:
+            #     traverse tree to find position
+            temp = self.root
+            node = self.in_order_traversal(temp, val)
+            if node:
+                # we have found spot to insert in current tree, we just need to subtract the current size and then
+                # keep track of bucket
+                node.value -= val
+                return node.key, node.value
+            else:
+        #         make a new node and insert it
+                self.count += 1
+                new_node = Node(self.count, 1 - val, self.get_random_rank())
+                self.root = self.insert_recur(self.root, new_node)
+                self.size += 1
+                return self.count, new_node.value
+
+
 
     def remove(self, key: KeyType):
         self.root = self.remove_recur(self.root, key)
@@ -131,7 +202,6 @@ class ZipZipTree:
             right.size = (right.left.size if right.left else 0) + (right.right.size if right.right else 0) + 1
             return right
 
-
     def remove_recur(self, root, key):
         if not root:
             return None
@@ -144,7 +214,6 @@ class ZipZipTree:
 
         root.size = (root.left.size if root.left else 0) + (root.right.size if root.right else 0) + 1
         return root
-
 
     def find(self, key: KeyType) -> ValType:
         curr = self.root

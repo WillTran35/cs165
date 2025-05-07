@@ -11,15 +11,21 @@ def next_fit(items: list[float], assignment: list[int], free_space: list[float])
 
     # items - [.5, .7, .5 , .2, .4, .2, .5, .1, .6]
     EPSILON = 1e-10
+    print(f"TESTING NEXT FIT {items}")
+    count = 0
     for i in items:
         if len(free_space) == 0 or free_space[-1] + EPSILON < i :
             free_space.append(1 - i)
-            assignment.append(len(free_space) - 1)
+            assignment[count] = len(free_space) - 1
+            # assignment.append(len(free_space) - 1)
 
         else :
             free_space[-1] -= i
-            assignment.append(len(free_space) - 1)
-
+            assignment[count] = len(free_space) - 1
+            # assignment.append(len(free_space) - 1)
+        count += 1
+    print(f"NEXT FIT ASSIGNMENT {assignment}")
+    print(f"NEXT FIT FREE SPACE {free_space}")
 
 
 if __name__ == "__main__":
