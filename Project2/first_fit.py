@@ -18,11 +18,19 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
             free_space[bucket] = free
         else:
             free_space.append(free)
+        # print(tree.prioq[0])
         count += 1
 
-    print(f"assignment {assignment}")
+    print(f"assignment {assignment} ACTUAL")
+    print("assignment [0, 1, 0, 2, 1, 1, 3, 4, 5, 1, 5, 6, 2, 4, 2, 6, 3, 7, 8, 3]****")
     print(f"buckets: {free_space}")
+    print("expected buckets: [0, 0.01, 0, 0.08, 0.12, 0, 0.01, 0.37, 0.57]")
 
 if __name__ == "__main__":
-    arr = [0.1, 0.8, 0.3, 0.5, 0.7, 0.2, 0.6, 0.4]
-    first_fit(arr, [], [])
+    # arr = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38,0.03,0.26]
+    # first_fit(arr, [0 for i in range(len(arr))], [])
+    # print("items: [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38, 0.03, 0.26]")
+
+    arr2 = [0.54, 0.67, 0.46, 0.57, 0.06, 0.23, 0.83, 0.64, 0.47, 0.03, 0.53, 0.74, 0.36, 0.24, 0.07, 0.25, 0.05, 0.63, 0.43, 0.04]
+    first_fit(arr2, [0 for i in range(len(arr2))], [])
+

@@ -2,12 +2,13 @@
 # each file that uses a Zip Tree should import it from this file
 from __future__ import annotations
 
+import heapq
 from collections import deque
 from typing import TypeVar
 from dataclasses import dataclass
 import math
 import random
-
+from queue import PriorityQueue
 KeyType = TypeVar('KeyType')
 ValType = TypeVar('ValType')
 
@@ -20,12 +21,13 @@ class Rank:
 
 class Node:
     def __init__(self, key, value, rank):
-        self.key = key
-        self.value = value
+        self.key = key #bucket number
+        self.value = value #remaining capacity
         self.rank = rank
         self.left = None
         self.right = None
         self.size = 1
+        self.BRC = value
 
 
 class ZipZipTree:
@@ -36,6 +38,7 @@ class ZipZipTree:
         self.size = 0
         self.root = None  # should be a node
         self.count = -1
+        self.prioq = PriorityQueue()
         # print(f"made zipzip cap - {self.capacity} size - {self.size} root = {self.root.key if self.root else None}" )
 
     def print_tree(self):
@@ -148,16 +151,56 @@ class ZipZipTree:
         #     return node
         # return self.in_order_traversal(node.right, val)
 
-    def insertForFirstFit(self, val):
+    def find_node_path(self, node):
+        if not node:
+            return []
+        temp = self.root
+        result = []
+        while temp:
+            result.append(temp)
+            if node.key < temp.key:
+                temp = temp.left
+            elif node.key > temp.key:
+                temp = temp.right
+            else:
+                return result
 
+    def find_lowest(self, node, val, best=None):
+        EPSILON = 1e-10
+        if not node:
+            return best
+        if node.left:
+            if node.left.BRC + EPSILON >= val:
+                best = self.find_lowest(node.left, val, best)
+        if node.value + EPSILON >= val:
+            if best is None or node.key < best.key:
+                best = node
+        elif node.right:
+            if node.right.BRC + EPSILON >= val:
+                best = self.find_lowest(node.right, val, best)
+
+        return best
+
+    def update_max_path(self, node):
+        if not node:
+            return
+        node.BRC = node.value
+        if node.left:
+            node.BRC = max(node.left.BRC, node.BRC)
+        if node.right:
+            node.BRC = max(node.right.BRC, node.BRC)
+    def update_path(self, path):
+        for node in reversed(path):
+            self.update_max_path(node)
+
+    def insertForFirstFit(self, val):
         #     search for position to insert by checking size
         #     if it fits in a node, then we just subtract the size available,
         #     if we need to make a new node, we will make new node with key as the bin number and log it
         #       key is bin number, val is available capacity
-
         if not self.root:
+            # first node in tree
             self.count += 1
-            value = math.isclose(1, val, )
             node = Node(self.count, 1 - val, self.get_random_rank())
             self.root = self.insert_recur(self.root, node)
             self.size += 1
@@ -166,17 +209,24 @@ class ZipZipTree:
         else:
             #     traverse tree to find position
             temp = self.root
-            node = self.in_order_traversal(temp, val)
+            node = self.find_lowest(temp, val)
+            # print(node, path)
             if node:
                 # we have found spot to insert in current tree, we just need to subtract the current size and then
                 # keep track of bucket
+                # print(f"hi before node.value {node.value} - {val}")
                 node.value -= val
+                # print(f"hi node.value {node.value}" )
+                path = self.find_node_path(node)
+                self.update_path(path)
                 return node.key, node.value
             else:
         #         make a new node and insert it
                 self.count += 1
                 new_node = Node(self.count, 1 - val, self.get_random_rank())
                 self.root = self.insert_recur(self.root, new_node)
+                path = self.find_node_path(new_node)
+                self.update_path(path)
                 self.size += 1
                 return self.count, new_node.value
 
