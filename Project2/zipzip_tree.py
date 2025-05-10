@@ -29,6 +29,12 @@ class Node:
         self.size = 1
         self.BRC = value
 
+class NodeTreeSort:
+    def __init__(self, key):
+        self.val = key
+        self.left = None
+        self.right = None
+
 
 class ZipZipTree:
 
@@ -373,6 +379,36 @@ class ZipZipTree:
             root.size = (root.left.size if root.left else 0) + (root.right.size if root.right else 0) + 1
             return root, right
 
+    def insertTreeSort(self, root, key):
+        if root is None:
+            return NodeTreeSort(key)
+
+        if key > root.val:
+            root.left = self.insertTreeSort(root.left, key)
+        else:
+            root.right = self.insertTreeSort(root.right, key)
+
+        return root
+
+    def in_order_traversalTreeSort(self, root, result):
+        if root:
+            self.in_order_traversalTreeSort(root.left, result)
+            result.append(root.val)
+            self.in_order_traversalTreeSort(root.right, result)
+
+    def tree_sort_reverse(self, arr):
+        for key in arr:
+            self.root = self.insertTreeSort(self.root, key)
+
+        result = []
+        self.in_order_traversalTreeSort(self.root, result)
+        return result
+
 # feel free to define new methods in addition to the above
 # fill in the definitions of each required member function (above),
 # and for any additional member functions you define
+if __name__ == "__main__":
+    arr = [9, 16, 4, 14, 5, 13, 15, 12, 2, 8, 10, 0, 3, 7, 1, 11, 6]
+    bst = ZipZipTree(len(arr))
+    sorted_arr = bst.tree_sort_reverse(arr)
+    print(sorted_arr)

@@ -19,10 +19,11 @@ def best_fit(items: list[float], assignment: list[int], free_space: list[float])
     print(f"buckets: {free_space}")
 
 def best_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
-    item = list(reversed(tim_sort(items)))
-    print(f"BEST FIT DEC {item}")
+    tree = ZipZipTree(len(items))
+    sorted_arr = tree.tree_sort_reverse(items)
+    print(f"BEST FIT DEC {sorted_arr}")
     # insertion_sort(items).reverse()
-    best_fit(item, assignment, free_space)
+    best_fit(sorted_arr, assignment, free_space)
 
 if __name__ == "__main__":
     items = [0.54, 0.67, 0.46, 0.57, 0.06, 0.23, 0.83, 0.64, 0.47, 0.03, 0.53, 0.74, 0.36, 0.24, 0.07, 0.25, 0.05, 0.63, 0.43, 0.04]

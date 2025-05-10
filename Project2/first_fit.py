@@ -28,9 +28,11 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
     print("expected buckets: [0, 0.01, 0, 0.08, 0.12, 0, 0.01, 0.37, 0.57]")
 
 def first_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
-    items = list(reversed(tim_sort(items)))
+    tree = ZipZipTree(len(items))
+    sorted_arr = tree.tree_sort_reverse(items)
+    print(f"BEST FIT DEC {sorted_arr}")
     print(f"FIRST FIT DEC: {items}")
-    first_fit(items, assignment, free_space)
+    first_fit(sorted_arr, assignment, free_space)
 
 if __name__ == "__main__":
     # arr = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38,0.03,0.26]
