@@ -230,6 +230,45 @@ class ZipZipTree:
                 self.size += 1
                 return self.count, new_node.value
 
+    def findBestFit(self, root, val):
+        EPSILON = 1e-10
+        if not root:
+            return None
+        minimum = None
+        while root:
+            if root.key[0] + EPSILON< val:
+                root = root.right
+            elif root.key[0] + EPSILON > val:
+                minimum = root
+                root = root.left
+            elif root.key[0] + EPSILON == val:
+                minimum = root
+                return minimum
+        return minimum
+    def insertForBestFit(self, val):
+        if not self.root:
+            self.count += 1
+            node = Node((1 - val, self.count), 0,  self.get_random_rank())
+            self.root = self.insert_recur(self.root, node)
+            self.size += 1
+            return node.key[1], node.key[0]
+
+        else:
+            temp = self.root
+            node = self.findBestFit(temp, val)
+            if node:
+                new_node = Node((node.key[0] - val, node.key[1]), node.value, node.rank)
+                self.removeBestFit(node)
+                self.root = self.insert_recur(self.root, new_node)
+                return new_node.key[1], new_node.key[0]
+            else:
+                self.count += 1
+                new_node = Node((1 - val, self.count), 0, self.get_random_rank())
+                self.root = self.insert_recur(self.root, new_node)
+                self.size += 1
+
+                return new_node.key[1], new_node.key[0]
+
 
 
     def remove(self, key: KeyType):
@@ -259,6 +298,22 @@ class ZipZipTree:
             root.left = self.remove_recur(root.left, key)
         elif key > root.key:
             root.right = self.remove_recur(root.right, key)
+        else:
+            return self.zip(root.left, root.right)
+
+        root.size = (root.left.size if root.left else 0) + (root.right.size if root.right else 0) + 1
+        return root
+
+    def removeBestFit(self, key: KeyType):
+        self.root = self.remove_recurBestFit(self.root, key)
+        self.size = self.root.size if self.root else 0
+    def remove_recurBestFit(self, root, key):
+        if not root:
+            return None
+        if key.key[0] < root.key[0]:
+            root.left = self.remove_recurBestFit(root.left, key)
+        elif key.key[0] > root.key[0]:
+            root.right = self.remove_recurBestFit(root.right, key)
         else:
             return self.zip(root.left, root.right)
 

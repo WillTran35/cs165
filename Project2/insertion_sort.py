@@ -15,7 +15,7 @@ def insertion_sort(arr):
             j -= 1
         arr[j] = temp
     end = time.perf_counter_ns()
-    return end-start
+    return arr
 def make_runs(arr):
     result = []
     temp = []
@@ -46,7 +46,10 @@ def make_runs(arr):
         index += 1
 
     if len(temp) != 0:
-        result.append(temp)
+        if dec is True:
+            result.append(list(reversed(temp)))
+        else:
+            result.append(temp)
 
     return result
 
@@ -60,7 +63,7 @@ def merge(first, second, result):
     sub_arr = []
     res = []
     print(f'first: {first} second: {second} result: {result}')
-    while not pos1 >= first_len and not pos2 >= second_len:
+    while pos1 < first_len and pos2 < second_len:
         # print(pos1, pos2)
         if result[first[pos1]] < result[second[pos2]]:
             sub_arr.append(result[first[pos1]])
@@ -78,11 +81,12 @@ def merge(first, second, result):
             sub_arr.append(result[first[pos1]])
             start += 1
             sub_arr.append(result[second[pos2]])
+            res.append(first[pos1])
+            res.append(second[pos2])
             start += 1
             pos1 += 1
             pos2 += 1
-            res.append(first[pos1])
-            res.append(second[pos2])
+
             print(f"appended here3 {sub_arr}")
 
     if pos1 < first_len:
@@ -150,13 +154,14 @@ def tim_sort(arr):
             break
     while len(stack) != 1:
         stack[0],_ = merge(stack[0], stack[1], arr)
+        print("sortingi n here")
         stack.pop(1)
     end = time.perf_counter_ns()
     return _
 
 
 if __name__ == '__main__':
-    x = [96, 38, 81, 57, 63, 21, 14, 13, 50, 74]
+    x = [0.54, 0.67, 0.46, 0.57, 0.06, 0.23, 0.83, 0.64, 0.47, 0.03, 0.53, 0.74, 0.36, 0.24, 0.07, 0.25, 0.05, 0.63, 0.43, 0.04]
     print(x)
     print(make_runs(x))
     print(tim_sort(x))
