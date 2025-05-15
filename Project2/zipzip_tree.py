@@ -390,6 +390,22 @@ class ZipZipTree:
 
         return root
 
+    def count_buckets(self, node):
+        stack = []
+        count = 0
+        # print(f"in order node: {node.value}")
+        while stack or node:
+            while node:
+                stack.append(node)
+                # print(f"outside33 {stack}")
+                node = node.left
+            # print(f"outside {node}")
+            node = stack.pop()
+            # print(f"outside3 {node}")
+            count += 1
+            node = node.right
+        return count
+
     def in_order_traversalTreeSort(self, root, result):
         if root:
             self.in_order_traversalTreeSort(root.left, result)

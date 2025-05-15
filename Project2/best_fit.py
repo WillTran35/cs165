@@ -12,18 +12,20 @@ def best_fit(items: list[float], assignment: list[int], free_space: list[float])
             free_space.append(free)
         # print(tree.prioq[0])
         count += 1
-    print(items)
-    print(f"assignment [0, 0, 1, 1, 2, 1, 3, 3] **")
-    print(f"assignment {assignment} ACTUAL")
-    print(f'buckets: [0.1, 0.0, 0.3, 0.0] **')
-    print(f"buckets: {free_space}")
+    # print(items)
+    # print(f"assignment [0, 0, 1, 1, 2, 1, 3, 3] **")
+    # print(f"assignment {assignment} ACTUAL")
+    # print(f'buckets: [0.1, 0.0, 0.3, 0.0] **')
+    # print(f"buckets: {free_space}")
+    return tree.get_size()
 
 def best_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
     tree = ZipZipTree(len(items))
     sorted_arr = tree.tree_sort_reverse(items)
-    print(f"BEST FIT DEC {sorted_arr}")
+    # print(f"BEST FIT DEC {sorted_arr}")
     # insertion_sort(items).reverse()
-    best_fit(sorted_arr, assignment, free_space)
+    size = best_fit(sorted_arr, assignment, free_space)
+    return size
 
 if __name__ == "__main__":
     items = [0.54, 0.67, 0.46, 0.57, 0.06, 0.23, 0.83, 0.64, 0.47, 0.03, 0.53, 0.74, 0.36, 0.24, 0.07, 0.25, 0.05, 0.63, 0.43, 0.04]

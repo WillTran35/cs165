@@ -10,7 +10,7 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
     # creates.
 
     tree = ZipZipTree(len(items))
-    print(f"TESTING ITEMS: {items}")
+    # print(f"TESTING ITEMS: {items}")
     count = 0
     for i in items:
         bucket, free = tree.insertForFirstFit(i)
@@ -22,17 +22,20 @@ def first_fit(items: list[float], assignment: list[int], free_space: list[float]
         # print(tree.prioq[0])
         count += 1
 
-    print(f"assignment {assignment} ACTUAL")
-    print("assignment [0, 1, 0, 2, 1, 1, 3, 4, 5, 1, 5, 6, 2, 4, 2, 6, 3, 7, 8, 3] ****")
-    print(f"buckets: {free_space}")
-    print("expected buckets: [0, 0.01, 0, 0.08, 0.12, 0, 0.01, 0.37, 0.57]")
+    # print(f"assignment {assignment} ACTUAL")
+    # print("assignment [0, 1, 0, 2, 1, 1, 3, 4, 5, 1, 5, 6, 2, 4, 2, 6, 3, 7, 8, 3] ****")
+    # print(f"buckets: {free_space}")
+    # print("expected buckets: [0, 0.01, 0, 0.08, 0.12, 0, 0.01, 0.37, 0.57]")
+
+    return tree.get_size()
 
 def first_fit_decreasing(items: list[float], assignment: list[int], free_space: list[float]):
     tree = ZipZipTree(len(items))
     sorted_arr = tree.tree_sort_reverse(items)
-    print(f"BEST FIT DEC {sorted_arr}")
-    print(f"FIRST FIT DEC: {items}")
-    first_fit(sorted_arr, assignment, free_space)
+    # print(f"BEST FIT DEC {sorted_arr}")
+    # print(f"FIRST FIT DEC: {items}")
+    size = first_fit(sorted_arr, assignment, free_space)
+    return size
 
 if __name__ == "__main__":
     # arr = [0.79, 0.88, 0.95, 0.12, 0.05, 0.46, 0.53, 0.64, 0.04, 0.38,0.03,0.26]
