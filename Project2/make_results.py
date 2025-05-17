@@ -1,3 +1,8 @@
+import glob
+import os
+from pathlib import Path
+
+import pandas as pd
 import csv
 import math
 
@@ -17,9 +22,9 @@ def compute_waste(algorithm, items):
     return bins_used - total_size
 
 def test():
-    n_values = [2 ** i for i in range(1, 20)]
+    n_values = [2 ** i for i in range(1, 16)]
     # random.shuffle(n_values)
-    num_trials = 30
+    num_trials = 3500
 
 
     algorithms = {
@@ -47,7 +52,7 @@ def test():
 
 
     for name, data in results.items():
-        filename = name.lower().replace(" ", "_") + ".csv"
+        filename = name.lower().replace(" ", "_") + "3500.csv"
         with open(filename, mode="w", newline='') as f:
             writer = csv.writer(f)
             writer.writerow(["n", "avg_waste"])
@@ -57,23 +62,7 @@ def test():
 
 if __name__ == "__main__":
     test()
-    # plt.figure(figsize=(10, 6))
-    # for name, wastes in results.items():
-    #     log_n = np.log(n_values)
-    #     log_w = np.log(wastes)
-    #     slope, intercept, *_ = linregress(log_n, log_w)
-    #     plt.plot(n_values, wastes, label=f"{name} (slope ≈ {slope:.3f})", marker='o')
-    #     print(f"{name} slope: {slope:.4f} => W({name}) ~ n^{slope:.4f}")
-    #
-    # plt.xscale('log')
-    # plt.yscale('log')
-    # plt.xlabel("n (log scale)")
-    # plt.ylabel("Waste W(A) (log scale)")
-    # plt.title("Waste vs. n for Bin Packing Algorithms")
-    # plt.legend()
-    # plt.grid(True, which="both", ls="--", linewidth=0.5)
-    # plt.tight_layout()
-    # plt.show()
-
+    # print(glob.glob("/Users/willtran/PycharmProjects/cs165/Project2/csv"))
+    # csv.graph()
 
 
