@@ -58,6 +58,8 @@ def graph_algorithm_tests():
 
 	print(f"graph number nodes: {graph.get_num_nodes()}")
 	print(f"graph num edges: {graph.get_num_edges()}")
+	print(f'node: {graph.get_neighbors(4)}')
+	print(graph.get_adj_list())
 
 	# print(f'get_diameter(): {requirements.get_diameter(graph)}, Expected: 5')
 	# print(f'get_clustering_coefficient(): {requirements.get_clustering_coefficient(graph)}, Expected: 0.4')

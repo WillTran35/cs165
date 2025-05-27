@@ -10,7 +10,7 @@ class Graph:
 		self.adj_list = {}
 
 		for i in edges:
-			if i not in self.adj_list:
+			if i[0] not in self.adj_list:
 				self.adj_list[i[0]] = [i[1]]
 			else:
 				self.adj_list[i[0]].append(i[1])
@@ -38,6 +38,8 @@ class Graph:
 		else:
 			return self.adj_list[node]
 
+	def get_adj_list (self):
+		return self.adj_list
 	# feel free to define new methods in addition to the above
 	# fill in the definitions of each required member function (above),
 	# and for any additional member functions you define
