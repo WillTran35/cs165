@@ -7,6 +7,13 @@ class Graph:
 	def __init__(self, num_nodes: int, edges: Iterable[tuple[int, int]]):
 		self.num_nodes = num_nodes
 		self.edges = edges
+		self.adj_list = {}
+
+		for i in edges:
+			if i not in self.adj_list:
+				self.adj_list[i[0]] = [i[1]]
+			else:
+				self.adj_list[i[0]].append(i[1])
 
 	def get_num_nodes(self) -> int:
 		my_set = set()
@@ -24,7 +31,12 @@ class Graph:
 		return count
 
 	def get_neighbors(self, node: int) -> Iterable[int]:
-		raise NotImplementedError
+		"""given a node index, return an iterable type over the collection of its neighbors. the iterable type can be a
+		list, set, generator, etc. each neighbor should appear exactly once."""
+		if node not in self.adj_list:
+			return []
+		else:
+			return self.adj_list[node]
 
 	# feel free to define new methods in addition to the above
 	# fill in the definitions of each required member function (above),
