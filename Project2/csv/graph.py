@@ -24,8 +24,8 @@ def graph():
         print(x, y)
 
         # Log transform
-        log_x = np.log2(x)
-        log_y = np.log2(y)
+        log_x = np.log2(x)[1:]
+        log_y = np.log2(y)[1:]
 
         # Linear fit in log-log space
         slope, intercept = np.polyfit(log_x, log_y, 1)
