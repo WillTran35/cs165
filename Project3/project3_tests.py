@@ -61,7 +61,7 @@ def graph_algorithm_tests():
 	print(f'node: {graph.get_neighbors(4)}')
 	print(graph.get_adj_list())
 
-	# print(f'get_diameter(): {requirements.get_diameter(graph)}, Expected: 5')
+	print(f'get_diameter(): {requirements.get_diameter(graph)}, Expected: 5')
 	# print(f'get_clustering_coefficient(): {requirements.get_clustering_coefficient(graph)}, Expected: 0.4')
 	# print(f'get_degree_distribution(): {requirements.get_degree_distribution(graph)}, Expected: { {2: 5, 3: 3, 4: 1, 5: 1} }')
 
