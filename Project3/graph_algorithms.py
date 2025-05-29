@@ -58,8 +58,16 @@ def get_clustering_coefficient(graph: Graph) -> float:
 
 
 def get_degree_distribution(graph: Graph) -> dict[int, int]:
-	raise NotImplementedError
+	histogram = {}
+	graph_adj_list = graph.get_adj_list()
+	for i in graph_adj_list.keys():
+		degree = len(graph_adj_list[i])
+		if degree not in histogram:
+			histogram[degree] = 1
+		else:
+			histogram[degree] += 1
 
+	return histogram
 # if __name__ == "__main__":
 # 	graph = requirements.Graph(10,
 # 							   {(0, 3), (0, 7), (1, 4), (1, 5), (1, 6), (2, 3), (2, 7), (3, 4), (3, 8), (3, 9), (4, 5),
