@@ -21,12 +21,12 @@ class Graph:
 				self.adj_list[i[1]].append(i[0])
 
 	def get_num_nodes(self) -> int:
-		my_set = set()
-		for i in self.edges:
-			my_set.add(i[0])
-			my_set.add(i[1])
+		# my_set = set()
+		# for i in self.edges:
+		# 	my_set.add(i[0])
+		# 	my_set.add(i[1])
 
-		return len(my_set)
+		return self.num_nodes
 
 	def get_num_edges(self) -> int:
 		count = 0
