@@ -63,58 +63,94 @@ def compute_denominator(graph):
 
 
 
+# def create_degeneracy_order(graph_obj):
+#     graph = graph_obj.get_adj_list()
+#     degree = {v: len(neighbors) for v, neighbors in graph.items()}
+#     ordering = []
+#     visited = set()
+#
+#     while len(visited) < len(graph):
+#         min_deg_node = None
+#         min_deg = float("inf")
+#
+#         for v in graph:
+#             if v not in visited and degree[v] < min_deg:
+#                 min_deg = degree[v]
+#                 min_deg_node = v
+#
+#         if min_deg_node is None:
+#             break
+#
+#         visited.add(min_deg_node)
+#         ordering.append(min_deg_node)
+#
+#         for neighbor in graph[min_deg_node]:
+#             if neighbor not in visited:
+#                 degree[neighbor] -= 1
+#
+#     return ordering
+
 def create_degeneracy_order(graph_obj):
+    from collections import deque
+
     graph = graph_obj.get_adj_list()
-    degree = {v: len(neighbors) for v, neighbors in graph.items()}
+    n = len(graph)
+    degrees = {v: len(neighs) for v, neighs in graph.items()}
+    max_deg = max(degrees.values(), default=0)
+
+    buckets = [deque() for _ in range(max_deg + 1)]
+    for node, deg in degrees.items():
+        buckets[deg].append(node)
+
     ordering = []
     visited = set()
 
-    while len(visited) < len(graph):
-        min_deg_node = None
-        min_deg = float("inf")
-
-        for v in graph:
-            if v not in visited and degree[v] < min_deg:
-                min_deg = degree[v]
-                min_deg_node = v
-
-        if min_deg_node is None:
-            break
-
-        visited.add(min_deg_node)
-        ordering.append(min_deg_node)
-
-        for neighbor in graph[min_deg_node]:
-            if neighbor not in visited:
-                degree[neighbor] -= 1
+    for _ in range(n):
+        for deg in range(max_deg + 1):
+            if buckets[deg]:
+                u = buckets[deg].pop()
+                break
+        ordering.append(u)
+        visited.add(u)
+        for v in graph[u]:
+            if v not in visited:
+                d = degrees[v]
+                degrees[v] -= 1
+                buckets[d].remove(v)
+                buckets[d - 1].append(v)
 
     return ordering
 
 def count_triangles(graph):
-    count = 0
     degen_list = create_degeneracy_order(graph)
     graph_adj_list = graph.get_adj_list()
     order_index = {v: i for i, v in enumerate(degen_list)}
 
-    forward_neighbors = {
-        u: [v for v in graph_adj_list[u] if order_index[u] < order_index[v]]
+    forward = {
+        u: sorted([v for v in graph_adj_list[u] if order_index[u] < order_index[v]])
         for u in graph_adj_list
     }
 
+    count = 0
+
     for u in degen_list:
-        # u_neighbors = [v for v in graph_adj_list[u] if order_index[u] < order_index[v]]
-        # neighbor_set = set(u_neighbors)
-        # for v in u_neighbors:
-        #     v_neighbors = [w for w in graph_adj_list[v] if order_index[v] < order_index[w]]
-        #     for w in v_neighbors:
-        #         if w in neighbor_set:
-        #             count += 1
-        u_set = set(forward_neighbors[u])
-        for v in forward_neighbors[u]:
-            v_set = set(forward_neighbors[v])
-            count += len(u_set & v_set)
+        list1 = forward[u]
+        for v in list1:
+            list2 = forward[v]
+            i = j = 0
+            while i < len(list1) and j < len(list2):
+                if list1[i] == list2[j]:
+                    count += 1
+                    i += 1
+                    j += 1
+                elif list1[i] < list2[j]:
+                    i += 1
+                else:
+                    j += 1
 
     return count
+
+
 
 
 def get_clustering_coefficient(graph: Graph) -> float:
